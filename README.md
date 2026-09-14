@@ -6,7 +6,9 @@ The marketing site and playable preview collection for **Sleep Soundscapes by In
 
 Five original three-minute previews: softened white noise, distant thunder and rain, gentle rain on a window, deep brown noise, and an ambient sleep drone. Each starts with a short title that fades to black by six seconds. The rain and thunder are synthesized sound designs, not field recordings.
 
-The eight-hour editions are planned and are not yet available. These previews are not medical treatments and carry no claims about sleep outcomes.
+All five eight-hour videos are available as MP4 downloads in [v1.0.0](https://github.com/ChiefInnovator/sleep-videos/releases/tag/v1.0.0). The site player offers the shorter previews, with a full-video download link for each selection. Every full track is freshly synthesized over eight hours, rather than repeating its preview. Lossless masters are retained in the production workspace.
+
+The full videos pass automated duration, audio-level and decoded-pixel checks; critical listening and comparisons across playback devices remain pending. No medical or sleep-outcome claims are made.
 
 ## Development
 

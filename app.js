@@ -21,6 +21,7 @@ buttons.forEach(button => button.addEventListener('click', () => {
   document.getElementById('track-title').textContent = title;
   document.getElementById('track-description').textContent = description;
   document.getElementById('download').href = `media/${id}-preview.mp4`;
+  document.getElementById('download-full').href = `https://github.com/ChiefInnovator/sleep-videos/releases/download/v1.0.0/${id}-full.mp4`;
   buttons.forEach(other => other.setAttribute('aria-pressed', String(other === button)));
   error.hidden = true;
   player.load();
