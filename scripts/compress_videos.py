@@ -29,6 +29,7 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         print(f'{kind}: encoding {args.bitrate} from {master.relative_to(ROOT)}', flush=True)
         staged_report = report.with_suffix('.tmp.json')
+        previous = target.with_suffix('.previous.tmp.mp4')
         try:
             video(master, temporary, seconds, kind, efficient=args.full, bitrate=args.bitrate)
             size = temporary.stat().st_size
@@ -46,11 +47,20 @@ def main():
             data['delivery'] = {'bitrate':args.bitrate, 'encoder':'aac_at' if args.full else 'aac', 'bytes':size,
                                 'sha256':digest(temporary), 'path':str(target.relative_to(ROOT))}
             staged_report.write_text(json.dumps(data, indent=2)+'\n')
+            # Keep the previous delivery until the report is swapped, so target and report change together.
+            if target.exists():
+                target.replace(previous)
             temporary.replace(target)
-            staged_report.replace(report)
+            try:
+                staged_report.replace(report)
+            except OSError:
+                if previous.exists():
+                    previous.replace(target)
+                raise
         finally:
             temporary.unlink(missing_ok=True)
             staged_report.unlink(missing_ok=True)
+            previous.unlink(missing_ok=True)
         print(f'{kind}: PASS {size} bytes', flush=True)
 
 
