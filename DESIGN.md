@@ -120,11 +120,14 @@ The palette is a dark, slightly green-tinted night ("moss") lit by one warm embe
 
 The type pairs a serif for feeling with a system sans for information.
 
-- **Display (Georgia, 66–104px fluid, 400, -0.055em):** the hero headline. The emphasized phrase is set in `<em>` with no italic, colored amber ("fade out.").
+- **Display (Georgia, 66–104px fluid, 400, -0.055em):** the hero headline. The emphasized phrase is an italic `<em>`, colored amber ("fade out.").
 - **Headline (Georgia, 38–58px fluid, -0.035em):** section headings. The closing section scales up to 48–76px.
 - **Title (Georgia 29px):** the name of the selected track in the player.
 - **Body (system sans 16px/1.6)** and **Body Lead (22px)** for the hero's one-line promise.
-- **Label (system sans 10–12px, 600, +0.12–0.16em tracking, uppercase copy):** eyebrows, the collection note and player labels. Track numbers and durations use `tabular-nums`.
+- **Label (system sans 11–12px, +0.14–0.16em tracking, uppercase copy):** the collection note and player labels. Nothing smaller than 11px. Track numbers and durations use `tabular-nums`.
+- **Principle headings (Georgia 23px):** the approach section's three statements.
+
+**The No Kicker Rule.** Headings carry their own weight. Do not put eyebrow or kicker labels or section numbers above headings.
 
 **The Two Voices Rule.** Serif carries emotion (headlines, track title). Sans carries facts (descriptions, durations, links). Never set metadata in the serif, and never set a headline in the sans.
 
@@ -147,12 +150,12 @@ Corners are nearly square: 3px on buttons and the video, 6px on the listening-ro
 
 ## Components
 
-- **Primary button:** an amber fill with Ember Ink text, 3px radius, 14×22px padding, and a wide 40px gap before its arrow glyph. Hover lightens to #f4c593. There is one primary button per view.
+- **Primary button:** an amber fill with Ember Ink text, 3px radius, 14×22px padding, and a wide gap before its arrow glyph (40px in the hero, 24px in the player). Hover lightens to #f4c593. There is one primary button per view: "Find your sound" in the hero, and "Download the 8-hour video" in the player, followed by a muted file note (format, size, host).
 - **Track item:** a full-width row button with a number, name and short description, and a duration on the right. It uses `aria-pressed` for selection: the selected row gets a tonal background plus a 3px inset amber edge. The minimum height is 100px on desktop and 82px on mobile, so it is easy to tap in bed.
-- **Player panel:** a label row (`PREVIEW / 01`, `03:00`), a 16:9 black video with native controls and `preload="none"`, a serif title with a muted description, and a footer of amber text links (full video, preview download). The error text is Ember Warning with `role="alert"`.
-- **Text link:** amber, with a 5px underline offset and an arrow glyph spaced 8–20px away.
+- **Player panel:** a label row (`PREVIEW / 01`, `03:00`), a 16:9 black video with native controls and `preload="none"`, a serif title with a muted description, and a footer holding the primary full-video button, the file note, and a muted "Save this preview" link. Below 700px, selecting a track scrolls the player into view (instantly when reduced motion is on). The error text is Ember Warning with `role="alert"`.
+- **Text link:** amber, with a 5px underline offset and an arrow glyph spaced 8–20px away. Navigation and footer links get 11px vertical padding so they are at least 40px tall to tap.
 - **Focus:** a 2px amber outline with a 6px offset on links, buttons and the video.
-- **Eclipse art:** a CSS-only radial-gradient disc with two hairline orbits, rotated −28°, decorative and `aria-hidden`.
+- **Eclipse art:** a CSS-only radial-gradient disc with two hairline orbits, rotated −28°, decorative and `aria-hidden`. Below 700px it shrinks to 130px and sits above the headline, and its caption is hidden.
 
 ## Do's and Don'ts
 
