@@ -1,0 +1,15 @@
+white-noise: synthesizing 180 seconds
+white-noise: encoding and verifying every black frame
+white-noise: PASS -25.00 LUFS, -15.27 dBTP
+distant-thunder-rain: synthesizing 180 seconds
+distant-thunder-rain: encoding and verifying every black frame
+distant-thunder-rain: PASS -26.00 LUFS, -16.52 dBTP
+rain-on-window: synthesizing 180 seconds
+rain-on-window: encoding and verifying every black frame
+rain-on-window: PASS -27.00 LUFS, -17.67 dBTP
+brown-noise: synthesizing 180 seconds
+brown-noise: encoding and verifying every black frame
+brown-noise: PASS -27.00 LUFS, -7.53 dBTP
+ambient-drone: synthesizing 180 seconds
+ambient-drone: encoding and verifying every black frame
+ambient-drone: PASS -28.00 LUFS, -20.45 dBTP

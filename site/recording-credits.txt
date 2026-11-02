@@ -1,0 +1,53 @@
+Weather recording source-bank credits
+
+Adaptations: native-speed excerpts, resampling, fixed EQ and level adjustments, quiet passage sequencing and rain crossfades. Finite recordings are reused.
+
+thunder-rayjensen — rayjensen
+https://freesound.org/people/rayjensen/sounds/200990/
+CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Representation: Public HQ MP3 preview, not the original WAV.
+
+thunder-kingsrow — kingsrow
+https://freesound.org/people/kingsrow/sounds/361772/
+CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Representation: Public HQ MP3 preview, not the original WAV.
+
+thunder-fission9 — Fission9
+https://freesound.org/people/Fission9/sounds/534023/
+CC0-1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Representation: Public HQ MP3 preview, not the original WAV.
+
+storm-jcguan — Jc Guan / stephan
+https://commons.wikimedia.org/wiki/File:Storm_thunderbolts.ogg
+Public-Domain — https://commons.wikimedia.org/wiki/File:Storm_thunderbolts.ogg
+Representation: Commons Ogg field recording; see source page for prior encoding.
+
+rbh thunder storm.wav — RHumphries / Richard Humphries
+https://commons.wikimedia.org/wiki/File:Rhumphries_-_rbh-thunder-storm.ogg
+CC-BY-3.0 — https://creativecommons.org/licenses/by/3.0
+Representation: Commons Ogg field recording; see source page for prior encoding.
+
+storm-ezwa — ezwa
+https://commons.wikimedia.org/wiki/File:Rain_and_thunder_(1).ogg
+Public-Domain — https://commons.wikimedia.org/wiki/File:Rain_and_thunder_(1).ogg
+Representation: Commons Ogg field recording; see source page for prior encoding.
+
+storm-caesar — Caesar
+https://commons.wikimedia.org/wiki/File:Rain_and_thunder.ogg
+Public-Domain — https://commons.wikimedia.org/wiki/File:Rain_and_thunder.ogg
+Representation: Commons Ogg field recording; see source page for prior encoding.
+
+Medium shower accompanied by thunders — CutSomeSlackenstein
+https://commons.wikimedia.org/wiki/File:Medium_shower_accompanied_by_thunders.ogg
+CC-BY-4.0 — https://creativecommons.org/licenses/by/4.0
+Representation: Commons Ogg field recording; see source page for prior encoding.
+
+window-cori — cori / Cori Samuel
+https://commons.wikimedia.org/wiki/File:Rain_against_the_window.ogg
+Public-Domain — https://commons.wikimedia.org/wiki/File:Rain_against_the_window.ogg
+Representation: Commons Ogg transcode of a window-sill field recording; includes coastal wind.
+
+rain-ezwa — ezwa
+https://commons.wikimedia.org/wiki/File:Rain_(1).ogg
+Public-Domain — https://commons.wikimedia.org/wiki/File:Rain_(1).ogg
+Representation: Commons Ogg transcode of natural rain.
