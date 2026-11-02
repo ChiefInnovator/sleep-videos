@@ -6,11 +6,11 @@ body{background:#11151b;color:#e4e8ef;font:17px/1.6 system-ui;max-width:850px;ma
 h1{font-weight:550}p{color:#b4becb}article{border-top:1px solid #303944;padding:24px 0}h2{font-size:21px}video{width:100%;max-height:280px;background:#000}a{color:#a5caff}small{color:#b4becb}
 </style>
 <h1>Sleep audio previews</h1>
-<p>Five original synthetic sound designs. Each preview is three minutes, with a quick two-second audio fade-in and a gentle 25-second fade-out. Listen at a comfortable volume. Technical measurements are separate from the listening evaluation, which remains pending.</p>
+<p>Recorded rain and thunder alongside original noise and ambient tones. Each preview is three minutes, with a quick two-second audio fade-in and a gentle 25-second fade-out. Listen at a comfortable volume. Technical measurements are separate from the listening evaluation, which remains pending.</p>
 <p>Each preview opens with its video title and a smaller Inventing Fire with AI logo for four seconds, fades to black over two seconds, and stays black for the remainder. Full eight-hour videos are on the v1.0.0 release.</p>
 <main id="previews"></main>
 <script>
-const items=[['white-noise','Softened white noise','High-frequency shaping for a less bright texture.'],['distant-thunder-rain','Distant thunder and steady rain','Synthetic rain with gentle, irregular thunder events.'],['rain-on-window','Gentle rain on a window','Synthetic indoor rain and delicate glass textures.'],['brown-noise','Deep brown noise','Controlled subsonic energy and warm low-frequency emphasis.'],['ambient-drone','Deep ambient sleep drone','Original sustained tones with slow harmonic evolution.']];
+const items=[['white-noise','Softened white noise','High-frequency shaping for a less bright texture.'],['distant-thunder-rain','Distant thunder and steady rain','Real storm passages retain native thunder cadence without added overlap.'],['rain-on-window','Gentle rain on a window','Calm recorded window rain with soft glass detail.'],['brown-noise','Deep brown noise','Controlled subsonic energy and warm low-frequency emphasis.'],['ambient-drone','Deep ambient sleep drone','Original sustained tones with slow harmonic evolution.']];
 document.querySelector('main').innerHTML=items.map(([id,title,description])=>`<article><h2>${title}</h2><p>${description}</p><video controls preload="none" poster="assets/${id}-title.png" src="site/media/${id}-preview.mp4?v=160k"></video><br><small><a href="previews/${id}-preview.flac">Lossless 24-bit master</a> · <a href="reports/${id}-preview.json">Production sheet and measurements</a></small></article>`).join('');
 document.addEventListener('play',e=>{document.querySelectorAll('video').forEach(v=>{if(v!==e.target)v.pause()})},true);
 </script></html>

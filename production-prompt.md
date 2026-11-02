@@ -9,6 +9,7 @@ Our objective is to produce cleaner, more natural, more comfortable audio than t
 ### Creative direction and requirements
 
 - Create original audio using synthesis, original recordings, or appropriately licensed source material. Do not download, sample, or copy the reference videos’ audio.
+- Prefer real sounds and documented licensed field recordings for environmental audio whenever suitable recordings are available.
 - Use the references to understand the intended listening experience. Their supplied descriptions and metadata have not been independently verified.
 - Aim for an immersive, believable sound that remains comfortable over an entire night.
 - Natural environments should have subtle variation and depth. Synthetic noise should remain consistent without sounding harsh, metallic, or mechanically pulsed.
@@ -44,14 +45,14 @@ Our objective is to produce cleaner, more natural, more comfortable audio than t
 **Supplied reference duration:** 10:02:01  
 **Our duration:** 8 hours
 
-**Listening purpose:** A convincing overnight rainstorm with gentle, distant thunder.
+**Listening purpose:** A convincing overnight rainstorm with frequent short thunder cracks and rolling tails.
 
 **Production direction:**
 
 - Establish one coherent listening location: a sheltered position overlooking a rainy outdoor environment.
-- Build depth from nearby soft rainfall, a wider wash of rain, and occasional distant rolling thunder.
-- Keep thunder rounded, gradual, and comfortably integrated into the rain. No close lightning cracks, explosive impacts, or startling bass surges.
-- Vary thunder timing, length, distance, and character naturally.
+- Use real storm recordings and retain their natural thunder frequency, timing and crack-to-rumble shape. Do not trigger strikes on a timer or synthesize pressure clicks.
+- Let each thunder passage finish before beginning the next. Join during quiet rain; never artificially layer thunder recordings over each other.
+- Preserve variation already present in the recorded weather, including quiet lulls. Do not manufacture regular spacing or rapid-fire electrical-stroke effects.
 - Let rainfall evolve subtly while maintaining a dependable overall level.
 - Avoid identifiable repeating thunder samples, hard stereo movement, heavy wind buffeting, and distracting water drips.
 
@@ -70,6 +71,7 @@ Our objective is to produce cleaner, more natural, more comfortable audio than t
 
 - Recreate a consistent indoor listening position beside a closed window.
 - Combine delicate rain on glass, occasional soft rivulets, and subdued exterior rainfall.
+- Prefer actual window recordings; select calm passages and restrain wind with gentle fixed EQ. Keep the glass detail soft and avoid synthetic popping taps.
 - Make individual droplets varied and irregular without prominent tapping rhythms.
 - Balance the detail of the glass texture with a smooth background rain bed.
 - Keep room resonance subtle and realistic.

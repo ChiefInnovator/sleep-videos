@@ -13,7 +13,7 @@ for kind in KINDS:
     report = ROOT/'reports'/f'{kind}-preview.json'
     data = json.loads(report.read_text())
     video(folder/f'{kind}-preview.flac', temporary, data['seconds'], kind)
-    qc = video_qc(temporary, data['seconds'], report)
+    qc = video_qc(temporary, data['seconds'], report, kind=kind)
     temporary.replace(target)
     run(['ffmpeg', '-y', '-v', 'error', '-i', str(target), '-frames:v', '1',
          str(ROOT/f'assets/{kind}-title.png')])

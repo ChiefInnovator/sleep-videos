@@ -1,5 +1,22 @@
 # Full eight-hour technical results
 
+## Revised weather — 2026-11-02
+
+Both weather videos were rebuilt from 48 kHz/24-bit FLAC masters using licensed real recordings and compressed with `scripts/compress_videos.py` at 160 kb/s AAC. Each is exactly 28,800 seconds, with 691,200 decoded video frames and 691,056 fully black frames after the title. Full lossless and decoded AAC checks passed; file hashes match the production sheets.
+
+| Current full video | Master LUFS-I | Master dBTP | AAC dBTP | Largest interior 1-second AAC RMS change (dB) | Bytes |
+|---|---:|---:|---:|---:|---:|
+| [distant-thunder-rain](https://github.com/ChiefInnovator/sleep-videos/raw/refs/heads/main/videos/distant-thunder-rain-full.mp4) | -27.8 | -3.0 | -2.6 | 19.424 | 607,364,337 |
+| [rain-on-window](https://github.com/ChiefInnovator/sleep-videos/raw/refs/heads/main/videos/rain-on-window-full.mp4) | -27.0 | -11.3 | -11.3 | 1.888 | 607,324,615 |
+
+Thunder uses 351 consecutive real storm passages with native timing and no scene overlap or independent strike timer. Quiet recorded rain bridges joins. Window rain uses calm recorded window passages and soft fixed shaping over recorded rain. Finite source passages are reused in varied order. Sources, ranges, licenses and checksums are recorded in the JSON sheets and [source manifest](../assets/recordings/sources.json); [publication credits](../site/recording-credits.txt) are also embedded in the weather MP4 metadata.
+
+The thunder screening limit is 20 dB for intentional natural claps; window rain retains the 3 dB steady-texture limit. All clipping, silence, duration and fade checks remain in place. The owner approved the real-thunder audition; full-mix and multi-device listening remain pending.
+
+## Original v1.0.0 archive
+
+The following results describe the original released audio. Its two synthesized weather tracks have been superseded by the revisions above. The release assets remain unchanged.
+
 All five MP4s and lossless masters passed complete-file numerical verification. Each is exactly 28,800 seconds (8:00:00). Masters contain 1,382,400,000 stereo sample frames at 48 kHz/24-bit. Videos contain 691,200 frames at 1280×720 and 24 fps, with AAC encoding configured at 320 kb/s.
 
 Each title and smaller Inventing Fire with AI logo hold for four seconds, then fade over two seconds. Every decoded RGB pixel from 00:06 onward was compared directly against zero: 691,056 completely black frames per video. Audio has a two-second opening fade and a 25-second closing fade, included in the runtime.

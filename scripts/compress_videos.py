@@ -30,12 +30,16 @@ def main():
         print(f'{kind}: encoding {args.bitrate} from {master.relative_to(ROOT)}', flush=True)
         staged_report = report.with_suffix('.tmp.json')
         previous = target.with_suffix('.previous.tmp.mp4')
+        if previous.exists():
+            raise RuntimeError(f'Recover the previous delivery before encoding: {previous}')
+        published = False
+        installed = False
         try:
             video(master, temporary, seconds, kind, efficient=args.full, bitrate=args.bitrate)
             size = temporary.stat().st_size
             if size > MAX_BYTES:
                 raise SystemExit(f'{kind}: {size} bytes exceeds the {MAX_BYTES}-byte limit')
-            qc = video_qc(temporary, seconds, report)
+            qc = video_qc(temporary, seconds, report, kind=kind)
             qc['probe']['format']['filename'] = str(target.relative_to(ROOT))
             # Prepare the report fully before touching the delivered file, so a failure leaves both unchanged.
             data = json.loads(report.read_text())
@@ -52,15 +56,20 @@ def main():
                 target.replace(previous)
             try:
                 temporary.replace(target)
+                installed = True
                 staged_report.replace(report)
+                published = True
             except OSError:
                 if previous.exists():
                     previous.replace(target)
+                elif installed:
+                    target.unlink(missing_ok=True)
                 raise
         finally:
             temporary.unlink(missing_ok=True)
             staged_report.unlink(missing_ok=True)
-            previous.unlink(missing_ok=True)
+            if published:
+                previous.unlink(missing_ok=True)
         print(f'{kind}: PASS {size} bytes', flush=True)
 
 

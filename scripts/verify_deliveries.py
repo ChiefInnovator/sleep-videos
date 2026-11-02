@@ -28,10 +28,12 @@ def main():
         bitrates.add(delivery['bitrate'].replace('k', ' kb/s') if delivery else '320 kb/s')
         master = ROOT/('masters' if args.full else 'previews')/f'{kind}-{mode}.flac'
         print(f'Checking decoded AAC: {kind}', flush=True)
-        data['video_qc']['decoded_aac_qc'] = decoded_audio_qc(video, seconds)
+        data['video_qc']['decoded_aac_qc'] = decoded_audio_qc(video, seconds, kind=kind)
         data['sha256'] = {'master':digest(master), 'video':digest(video)}
-        if kind == 'distant-thunder-rain':
-            data['thunder_events_seconds_duration_gain'] = Synth(kind, data['seed'], seconds).events
+        if kind in ('distant-thunder-rain', 'rain-on-window'):
+            data.pop('thunder_events_seconds_duration_gain', None)
+            data.pop('thunder_profiles', None)
+            data['native_weather'] = Synth(kind, data['seed'], seconds).weather.metadata()
         data['tools'] = {'ffmpeg':run(['ffmpeg', '-version']).stdout.splitlines()[0]}
         report.write_text(json.dumps(data, indent=2)+'\n')
         m = data['master_loudness']

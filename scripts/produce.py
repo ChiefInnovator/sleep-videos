@@ -1,11 +1,10 @@
-"""Original procedural audio, constant-gain mastering, black video, and decoded QC.
+"""Recorded weather and original procedural audio, constant-gain mastering, black video, and decoded QC.
 
 Run from the project folder; see README.md for the listening gate and limitations.
 """
 import argparse
 import hashlib
 import json
-import math
 import re
 import subprocess
 from pathlib import Path
@@ -23,8 +22,8 @@ FADE_IN_SECONDS = 2
 FADE_OUT_SECONDS = 25
 METHODS = [
     'Gaussian broadband noise; 11 kHz second-order low-pass for comfort; shared center and restrained independent sides. Softened white noise, not mathematically pure white noise.',
-    'Continuous filtered Gaussian rain layers at 180-8500 Hz and 800-6500 Hz, slow random intensity drift; newly synthesized band-limited thunder with irregular 29-67 second gaps, 10-19 second smooth envelopes and restrained stereo width.',
-    'Synthetic indoor rain bed at 350-5800 Hz; randomized noise-burst droplets through a 1300-6500 Hz band, with smooth 25-95 ms envelopes and fixed gentle stereo placement; no external recordings.',
+    'Real field-recorded storm passages retain native thunder cadence and complete rolling tails. Passages play sequentially, with quiet edge fades and a genuinely recorded rain floor; no generated cracks, triggered strikes, pitch shifts or overlapping storm scenes. Licensed source bank: assets/recordings/sources.json.',
+    'Real rain recorded against a window, sequenced from quiet passages. Fixed 180-6500 Hz shaping restrains coastal wind and softens glass detail. Includes a quiet recorded-rain floor; no synthetic glass taps. Licensed source bank: assets/recordings/sources.json.',
     'Leaky integration of Gaussian noise, 30 Hz high-pass for DC/subsonic control plus a 60 Hz high-pass to restrain low-bass energy surges, 1800 Hz low-pass; stable shared center and restrained independent sides. Fixed frequency shaping only, with no dynamic compression.',
     'Original sustained D/A harmonic pad at 73.416, 110, 146.832, 220 and 293.664 Hz with gentle upper partials and independent very slow phase/amplitude evolution. No binaural beat design, percussion, melody or external samples.'
 ]
@@ -56,18 +55,10 @@ class Synth:
         self.rng = np.random.default_rng(seed)
         self.state = {}
         self.events = []
-        event_rng = np.random.default_rng(seed + 10000)
-        t = 34.0
-        if kind == 'distant-thunder-rain':
-            while t < seconds:
-                duration = event_rng.uniform(10, 19)
-                self.events.append((t, duration, event_rng.uniform(.10, .18)))
-                t += duration + event_rng.uniform(29, 67)
-        self.next_drop = 0.0
-        self.drops = []
-        knots = np.arange(-45, seconds + 90, 45)
-        self.knots = knots
-        self.drift = event_rng.uniform(.94, 1.06, len(knots))
+        self.thunder_profiles = []
+        if kind in ('distant-thunder-rain', 'rain-on-window'):
+            from recorded_weather import RecordedWeather
+            self.weather = RecordedWeather(kind, seed, seconds, sample_rate=SR)
 
     def filt(self, key, x, frequencies, kind='bandpass', order=2):
         if key not in self.state:
@@ -84,6 +75,8 @@ class Synth:
     def block(self, start, n):
         t = (start + np.arange(n)) / SR
         k = self.kind
+        if k in ('distant-thunder-rain', 'rain-on-window'):
+            return self.weather.block(start, n)
         if k == 'white-noise':
             y = self.filt('white', self.noise(n), 11000, 'lowpass') * .1
         elif k == 'brown-noise':
@@ -91,34 +84,6 @@ class Synth:
             y = self.filt('subsonic', y, 30, 'highpass')
             y = self.filt('bass_surges', y, 60, 'highpass')
             y = self.filt('brown_top', y, 1800, 'lowpass') * 9
-        elif k == 'distant-thunder-rain':
-            y = self.filt('rain', self.noise(n), [180, 8500]) * .07
-            y += self.filt('near', self.noise(n), [800, 6500]) * .025
-            y *= np.interp(t, self.knots, self.drift)[:, None]
-            rumble = self.filt('thunder', self.noise(n), [35, 240])
-            for begin, duration, gain in self.events:
-                if begin < t[-1] and begin + duration > t[0]:
-                    u = np.clip((t - begin) / duration, 0, 1)
-                    env = np.sin(np.pi * u) ** 2
-                    y += rumble * (gain * env)[:, None]
-        elif k == 'rain-on-window':
-            y = self.filt('exterior', self.noise(n), [350, 5800]) * .05
-            texture = self.filt('glass', self.noise(n), [1300, 6500])
-            end = (start + n) / SR
-            while self.next_drop < end:
-                self.drops.append((self.next_drop, self.rng.uniform(.025, .095),
-                                   self.rng.uniform(.004, .016), self.rng.uniform(.35, .65)))
-                self.next_drop += self.rng.exponential(.026)
-            envelope = np.zeros((n, 2))
-            for begin, duration, gain, pan in self.drops:
-                a = max(0, int((begin - start / SR) * SR))
-                b = min(n, math.ceil((begin + duration - start / SR) * SR))
-                if b > a:
-                    u = np.clip((t[a:b] - begin) / duration, 0, 1)
-                    envelope[a:b] += (np.sin(np.pi * u) ** 2 * gain)[:, None] * np.array([1-pan, pan])
-            self.drops = [e for e in self.drops if e[0] + e[1] > end]
-            y += texture * envelope
-            y *= np.interp(t, self.knots, self.drift)[:, None]
         else:
             y = np.zeros((n, 2))
             for i, hz in enumerate([73.416, 110, 146.832, 220, 293.664]):
@@ -148,7 +113,7 @@ def generate(kind, seed, seconds, path):
             out.write(y)
 
 
-def audio_qc(path, seconds):
+def audio_qc(path, seconds, kind=None):
     maximum = 0.0
     square = 0.0
     count = 0
@@ -172,20 +137,27 @@ def audio_qc(path, seconds):
     interior = levels[FADE_IN_SECONDS:-FADE_OUT_SECONDS]
     assert maximum < 1 and min(interior) > -65
     jumps = np.abs(np.diff(interior))
-    assert float(max(jumps)) < 3, 'Abrupt one-second RMS change requires investigation'
+    # Native thunder contains intentional natural clap transients; steady textures retain the tighter screen.
+    change_limit = 20 if kind == 'distant-thunder-rain' else 3
+    assert float(max(jumps)) < change_limit, 'Abrupt one-second RMS change requires investigation'
     return {'sample_peak_dbfs':20*np.log10(maximum), 'dc_mean':(dc/count).tolist(),
             'rms_dbfs':20*np.log10(np.sqrt(square/(count*2))),
             'interior_one_second_rms_min_dbfs':min(interior),
             'interior_one_second_rms_max_dbfs':max(interior),
             'largest_interior_one_second_rms_change_db':float(max(jumps)),
+            'one_second_rms_change_limit_db':change_limit,
             'one_second_rms_dbfs':levels, 'block_boundary_max_sample_step':max_boundary_step,
             'limitations':'Numerical screening cannot establish absence of audible clicks, repetition, or unnatural texture.'}
 
 
 def video(master, output, seconds, kind, efficient=False, bitrate='160k'):
+    comment = None
+    if kind in ('distant-thunder-rain', 'rain-on-window'):
+        from recorded_weather import credits
+        comment = credits(kind)
     if efficient:
         from efficient_video import render
-        return render(master, output, seconds, kind, bitrate)
+        return render(master, output, seconds, kind, bitrate, comment=comment)
     run(['ffmpeg', '-y', '-hide_banner', '-nostdin', '-filter_complex_threads', '1', '-loop', '1', '-framerate', '24',
          '-t', str(TITLE_SECONDS), '-i', str(ROOT/'assets/inventing-fire-title.png'),
          '-f', 'lavfi', '-i', f'color=c=black:s=1280x720:r=24:d={seconds-TITLE_SECONDS}',
@@ -198,10 +170,11 @@ def video(master, output, seconds, kind, efficient=False, bitrate='160k'):
          '-force_key_frames', str(TITLE_SECONDS),
          '-pix_fmt', 'yuv420p', '-color_range', 'tv', '-colorspace', 'bt709',
          '-color_primaries', 'bt709', '-color_trc', 'bt709', '-c:a', 'aac', '-b:a', bitrate,
-         '-ar', str(SR), '-movflags', '+faststart', str(output)])
+         '-ar', str(SR), '-movflags', '+faststart',
+         *(['-metadata', 'comment='+comment] if comment else []), str(output)])
 
 
-def video_qc(path, seconds, report):
+def video_qc(path, seconds, report, kind=None):
     probe = json.loads(run(['ffprobe', '-v', 'error', '-show_format', '-show_streams', '-of', 'json', str(path)]).stdout)
     assert float(probe['format']['duration']) <= seconds
     v = next(s for s in probe['streams'] if s['codec_type'] == 'video')
@@ -226,7 +199,7 @@ def video_qc(path, seconds, report):
         pixel_check = 'Every decoded RGB frame hash compared against an all-zero RGB frame.'
     result = measure(path)
     assert float(result['input_tp']) <= -2
-    decoded = decoded_audio_qc(path, seconds)
+    decoded = decoded_audio_qc(path, seconds, kind=kind)
     return {'duration':probe['format']['duration'], 'decoded_rgb_frames':frame_count,
             'pixel_verification':pixel_check,
             'title_seconds':TITLE_SECONDS, 'title_hold_seconds':4, 'title_fade_seconds':2,
@@ -235,13 +208,13 @@ def video_qc(path, seconds, report):
             'aac_loudness':result, 'decoded_aac_qc':decoded, 'probe':probe}
 
 
-def decoded_audio_qc(path, seconds):
+def decoded_audio_qc(path, seconds, kind=None):
     temporary = path.with_suffix('.decoded.flac')
     try:
         # Decode the entire audible presentation, discarding only AAC end padding beyond the container duration.
         run(['ffmpeg', '-y', '-v', 'error', '-xerror', '-nostdin', '-i', str(path), '-map', '0:a:0',
              '-t', str(seconds), '-c:a', 'flac', '-sample_fmt', 's32', '-bits_per_raw_sample', '24', str(temporary)])
-        return audio_qc(temporary, seconds)
+        return audio_qc(temporary, seconds, kind=kind)
     finally:
         temporary.unlink(missing_ok=True)
 
@@ -253,7 +226,7 @@ def main():
     parser.add_argument('--render-without-listening-review', action='store_true',
                         help='Explicitly requested full render with listening review still pending')
     parser.add_argument('--only', choices=KINDS)
-    parser.add_argument('--resume', action='store_true', help='Reuse complete files from an interrupted render; all quality checks still run')
+    parser.add_argument('--resume', action='store_true', help='Reuse complete procedural outputs; weather is always regenerated from its recording bank. All quality checks still run')
     parser.add_argument('--efficient-video', action='store_true', help='Full renders: reuse encoded black frames and use macOS AudioToolbox AAC')
     args = parser.parse_args()
     if args.efficient_video and not args.full:
@@ -275,7 +248,8 @@ def main():
         report.parent.mkdir(parents=True, exist_ok=True)
         print(f'{kind}: synthesizing {seconds} seconds', flush=True)
         def complete_audio(path):
-            if not args.resume or not path.exists():
+            # Duration alone cannot prove that an old procedural master contains the current recordings.
+            if kind in ('distant-thunder-rain', 'rain-on-window') or not args.resume or not path.exists():
                 return False
             try:
                 info = sf.info(path)
@@ -291,10 +265,10 @@ def main():
                  '-c:a', 'flac', '-sample_fmt', 's32', '-bits_per_raw_sample', '24', str(master)])
         mastered = measure(master)
         assert float(mastered['input_tp']) <= -2
-        qc = audio_qc(master, seconds)
+        qc = audio_qc(master, seconds, kind=kind)
         print(f'{kind}: encoding and verifying every black frame', flush=True)
         reuse_video = False
-        if args.resume and output.exists():
+        if args.resume and kind not in ('distant-thunder-rain', 'rain-on-window') and output.exists():
             try:
                 existing = json.loads(run(['ffprobe', '-v', 'error', '-show_format', '-of', 'json', str(output)]).stdout)
                 reuse_video = float(existing['format']['duration']) == seconds
@@ -302,7 +276,7 @@ def main():
                 pass
         if not reuse_video:
             video(master, output, seconds, kind, efficient=args.efficient_video)
-        vqc = video_qc(output, seconds, report)
+        vqc = video_qc(output, seconds, report, kind=kind)
         data = {'kind':kind, 'mode':mode, 'seconds':seconds, 'sample_rate':SR, 'bits':24,
                 'seed':9142026+index, 'method':METHODS[index],
                 'provenance':'Original procedural synthesis using scripts/produce.py. No recordings, reference audio, samples, or third-party music used.',
@@ -315,6 +289,12 @@ def main():
                 'reference_comparison':'Not performed; usable reference audio unavailable in the browsing tool.',
                 'youtube_transcode_check':'Not performed; no upload requested.',
                 'status':'Technical checks passed; critical listening remains required.'}
+        if kind in ('distant-thunder-rain', 'rain-on-window'):
+            from recorded_weather import sources
+            data['provenance'] = 'Licensed field-recorded weather, mixed from finite source passages at native speed and cadence. No generated thunder impulses or synthetic glass taps.'
+            data['license_notes'] = 'Source declarations and credits: assets/recordings/sources.json. Attribution is embedded in MP4 metadata and included in publication copy.'
+            data['native_weather'] = Synth(kind, 9142026+index, seconds).weather.metadata()
+            data['recording_sources'] = sources(kind)
         report.write_text(json.dumps(data, indent=2)+'\n')
         raw.unlink()
         print(f'{kind}: PASS {mastered["input_i"]} LUFS, {mastered["input_tp"]} dBTP', flush=True)

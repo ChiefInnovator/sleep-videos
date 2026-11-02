@@ -10,15 +10,17 @@ Created through original synthesis. No music or voices. Choose a comfortable pla
 
 ## 2. Distant Thunder & Steady Rain — 8 Hours • Black Screen
 
-A continuous, originally synthesized rainstorm soundscape with steady rain and occasional soft, distant thunder. Designed around a sheltered listening perspective, with gradual fades and a short Inventing Fire with AI opening followed by a completely black screen for the remainder.
+A mix of real thunder and rain recordings, preserving the natural cadence and rolling decay within each passage. Thunder passages play sequentially with quiet rain joins. A short Inventing Fire with AI opening fades to a completely black screen.
 
-This is synthetic environmental sound design, not a field recording. No music or voices. Choose a comfortable playback volume.
+Finite licensed recordings are reused in varied passage order; this is an eight-hour mix rather than a continuous eight-hour field capture. Choose a comfortable playback volume.
+
+Recording credits: RHumphries, [rbh thunder storm.wav](https://commons.wikimedia.org/wiki/File:Rhumphries_-_rbh-thunder-storm.ogg), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/); CutSomeSlackenstein, [Medium shower accompanied by thunders](https://commons.wikimedia.org/wiki/File:Medium_shower_accompanied_by_thunders.ogg), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Adaptations: excerpts, resampling, fixed level adjustments and quiet-rain sequencing. Additional CC0/public-domain recordings and full source details are listed in `site/recording-credits.txt` and embedded in the MP4 metadata.
 
 ## 3. Gentle Rain on a Window — 8 Hours • Black Screen
 
-Eight hours of original synthetic rain-on-window ambience, combining soft exterior rain with delicate, irregular glass textures. A quiet indoor perspective, gentle fades, and a short Inventing Fire with AI opening that fades to a completely black screen.
+Eight hours of soft window-rain ambience built from calm excerpts of actual window rain and a recorded rain bed. Gentle fixed shaping restrains wind and keeps the glass texture soft. A short Inventing Fire with AI opening fades to a completely black screen.
 
-This is synthetic environmental sound design, not a field recording. No thunder, music, or voices. Choose a comfortable playback volume.
+Finite recorded passages are reused with quiet crossfades. Sources: Cori Samuel, Rain against the window; ezwa, Rain (1), both released into the public domain. Source links and changes are documented in `site/recording-credits.txt` and embedded in the MP4 metadata. Choose a comfortable playback volume.
 
 ## 4. Deep Brown Noise — 8 Hours • Black Screen
 
