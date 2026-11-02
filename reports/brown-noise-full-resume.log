@@ -1,0 +1,11 @@
+brown-noise: synthesizing 28800 seconds
+Traceback (most recent call last):
+  File "/Users/rich/.openclaw/projects/sleep-videos/scripts/produce.py", line 314, in <module>
+    main()
+    ~~~~^^
+  File "/Users/rich/.openclaw/projects/sleep-videos/scripts/produce.py", line 285, in main
+    qc = audio_qc(master, seconds)
+  File "/Users/rich/.openclaw/projects/sleep-videos/scripts/produce.py", line 174, in audio_qc
+    assert float(max(jumps)) < 3, 'Abrupt one-second RMS change requires investigation'
+           ^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Abrupt one-second RMS change requires investigation
