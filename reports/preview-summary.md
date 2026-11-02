@@ -5,11 +5,13 @@ All five 180-second deliveries passed numerical checks. Each master is 48 kHz/24
 | Sound | Master LUFS-I | Master dBTP | AAC dBTP | Master LRA (LU) | Technical checks |
 |---|---:|---:|---:|---:|---|
 | white-noise | -25.00 | -15.27 | -15.6 | 0.50 | Pass |
-| distant-thunder-rain | -26.00 | -16.52 | -16.5 | 0.90 | Pass |
-| rain-on-window | -27.00 | -17.67 | -17.9 | 0.70 | Pass |
+| distant-thunder-rain | -27.5 | -3.0 | -3.1 | 11.8 | Pass |
+| rain-on-window | -27.0 | -11.7 | -11.8 | 1.4 | Pass |
 | brown-noise | -27.0 | -12.3 | -12.3 | 1.2 | Pass |
 | ambient-drone | -28.00 | -20.45 | -20.2 | 1.50 | Pass |
 
 Critical listening, playback on multiple devices, and matched-loudness reference comparisons have not been completed. These checks cannot establish premium quality or realistic rain. See the separate full-length reports for eight-hour verification. See README.md for the listening checklist and production steps. No YouTube uploads were made.
 
 The two-second opening fade and 25-second closing fade are excluded from interior RMS-change/silence screening. Both preview and full-length generation use these audio fade durations. Loudness range includes the effect of fades as interpreted by the measurement algorithm. The full per-second measurements, hashes, methods and provenance are in the individual JSON production sheets.
+
+Weather previews revised 2026-11-02 use licensed real recordings. Thunder retains native within-passage timing with no added scene overlap; window rain uses calm recorded glass detail. Finite passages are reused. Source credits and checksums are in `assets/recordings/sources.json`, the weather MP4 metadata and `site/recording-credits.txt`. The owner approved the real-thunder audition; full-mix listening remains pending.
