@@ -50,8 +50,8 @@ def main():
             # Keep the previous delivery until the report is swapped, so target and report change together.
             if target.exists():
                 target.replace(previous)
-            temporary.replace(target)
             try:
+                temporary.replace(target)
                 staged_report.replace(report)
             except OSError:
                 if previous.exists():
