@@ -1,0 +1,76 @@
+{
+  "max_change_db": 3.7644648006764605,
+  "events": [
+    {
+      "second": 840,
+      "from_dbfs": -18.736612251565624,
+      "to_dbfs": -21.988793718544887,
+      "jump_db": 3.2521814669792626
+    },
+    {
+      "second": 2897,
+      "from_dbfs": -21.792379640514056,
+      "to_dbfs": -18.618226088947903,
+      "jump_db": 3.174153551566153
+    },
+    {
+      "second": 7843,
+      "from_dbfs": -18.66707359426737,
+      "to_dbfs": -22.178430132491847,
+      "jump_db": 3.511356538224476
+    },
+    {
+      "second": 8290,
+      "from_dbfs": -21.943640618810974,
+      "to_dbfs": -18.77779602715016,
+      "jump_db": 3.1658445916608144
+    },
+    {
+      "second": 9454,
+      "from_dbfs": -22.389433947208456,
+      "to_dbfs": -18.624969146531996,
+      "jump_db": 3.7644648006764605
+    },
+    {
+      "second": 9492,
+      "from_dbfs": -19.52223451600977,
+      "to_dbfs": -23.09088847029948,
+      "jump_db": 3.568653954289708
+    },
+    {
+      "second": 11191,
+      "from_dbfs": -19.57055946049912,
+      "to_dbfs": -22.65278717876371,
+      "jump_db": 3.0822277182645905
+    },
+    {
+      "second": 12280,
+      "from_dbfs": -19.471785427981366,
+      "to_dbfs": -22.541932883304867,
+      "jump_db": 3.0701474553235
+    },
+    {
+      "second": 25682,
+      "from_dbfs": -18.93661688663488,
+      "to_dbfs": -22.029476941155906,
+      "jump_db": 3.092860054521026
+    },
+    {
+      "second": 26198,
+      "from_dbfs": -22.501035208194857,
+      "to_dbfs": -19.367562488865047,
+      "jump_db": 3.1334727193298093
+    },
+    {
+      "second": 27756,
+      "from_dbfs": -18.911986844401273,
+      "to_dbfs": -22.06138357768029,
+      "jump_db": 3.1493967332790156
+    }
+  ],
+  "resolved": true,
+  "correction": "Added fixed 60 Hz high-pass filtering after the 30 Hz subsonic filter; regenerated preview and full audio without dynamic compression.",
+  "final_master_max_change_db": 2.5728708529501354,
+  "final_aac_max_change_db": 2.5762976506359436,
+  "final_report": "brown-noise-full.json"
+}

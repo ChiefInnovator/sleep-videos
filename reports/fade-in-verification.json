@@ -1,0 +1,32 @@
+[
+  {
+    "kind": "white-noise",
+    "fade_in_seconds": 2,
+    "full_level_from_seconds": 2,
+    "maximum_sample_error": 1.4682047689946955e-07
+  },
+  {
+    "kind": "distant-thunder-rain",
+    "fade_in_seconds": 2,
+    "full_level_from_seconds": 2,
+    "maximum_sample_error": 1.585319062578569e-07
+  },
+  {
+    "kind": "rain-on-window",
+    "fade_in_seconds": 2,
+    "full_level_from_seconds": 2,
+    "maximum_sample_error": 1.7906507973446117e-07
+  },
+  {
+    "kind": "brown-noise",
+    "fade_in_seconds": 2,
+    "full_level_from_seconds": 2,
+    "maximum_sample_error": 4.2213948955871494e-07
+  },
+  {
+    "kind": "ambient-drone",
+    "fade_in_seconds": 2,
+    "full_level_from_seconds": 2,
+    "maximum_sample_error": 2.059985404131992e-07
+  }
+]

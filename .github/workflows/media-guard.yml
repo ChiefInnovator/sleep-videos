@@ -1,0 +1,45 @@
+name: Media guard
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  media-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enforce tracked-media rules
+        run: |
+          fail=0
+          err() { echo "::error file=$1::$2"; fail=1; }
+          while read -r _ oid _ path; do
+            case "$path" in masters/*|renders/*) err "$path" "masters/ and renders/ must never be tracked";; esac
+            blob=$(git cat-file blob "$oid" | head -c 200 | tr -d '\0' || true)
+            if [[ "$blob" == "version https://git-lfs.github.com/spec/v1"* ]]; then
+              size=$(git cat-file blob "$oid" | awk '/^size /{print $2}')
+              sha=$(git cat-file blob "$oid" | sed -n 's/^oid sha256://p')
+              case "$path" in site/*) err "$path" "files under site/ must not be in LFS (Pages cannot serve them)";; esac
+              if ! [[ "$size" =~ ^[0-9]+$ && "$sha" =~ ^[0-9a-f]{64}$ ]]; then
+                err "$path" "malformed LFS pointer (size or oid missing or invalid)"; continue
+              fi
+            else
+              size=$(git cat-file -s "$oid")
+              sha=""
+            fi
+            [ "$size" -gt 1000000000 ] && err "$path" "$size bytes exceeds the 1,000,000,000-byte limit"
+            if [[ "$path" == *.mp4 ]]; then
+              if [[ "$path" =~ ^videos/(.+)-full\.mp4$ ]]; then report="reports/${BASH_REMATCH[1]}-full.json"
+              elif [[ "$path" =~ ^site/media/(.+)-preview\.mp4$ ]]; then report="reports/${BASH_REMATCH[1]}-preview.json"
+              else err "$path" "MP4s are allowed only as videos/<kind>-full.mp4 or site/media/<kind>-preview.mp4"; continue; fi
+              [ -z "$sha" ] && sha=$(git cat-file blob "$oid" | sha256sum | cut -d' ' -f1)
+              if [ ! -f "$report" ]; then err "$path" "missing $report; run scripts/compress_videos.py"
+              elif [ "$(jq -r '.delivery.sha256 // empty' "$report")" != "$sha" ]; then
+                err "$path" "SHA-256 does not match delivery.sha256 in $report; run scripts/compress_videos.py"
+              fi
+            fi
+          done < <(git ls-files -s)
+          exit $fail
