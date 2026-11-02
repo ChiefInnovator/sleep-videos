@@ -1,5 +1,8 @@
 """Rebuild the five preview videos with the branded opening, retaining audio masters."""
 import json
+import shutil
+import subprocess
+import sys
 from produce import ROOT, KINDS, video, video_qc, run
 
 for kind in KINDS:
@@ -19,4 +22,8 @@ for kind in KINDS:
     data.pop('sha256', None)
     data['visual_revision'] = 'Video-specific title with smaller Inventing Fire with AI logo: hold four seconds, fade two seconds, then pure black. Included in existing runtime.'
     report.write_text(json.dumps(data, indent=2)+'\n')
+    shutil.copyfile(ROOT/f'assets/{kind}-title.png', ROOT/f'site/media/{kind}-title.png')
     print(f'{kind}: PASS', flush=True)
+
+# Re-encode the published previews so site/media and their reports match the new opening.
+subprocess.run([sys.executable, str(ROOT/'scripts/compress_videos.py')], check=True)

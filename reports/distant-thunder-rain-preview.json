@@ -549,7 +549,7 @@
         }
       ],
       "format": {
-        "filename": "/Users/rich/.openclaw/projects/sleep-videos/site/media/distant-thunder-rain-preview.mp4",
+        "filename": "site/media/distant-thunder-rain-preview.mp4",
         "nb_streams": 2,
         "nb_programs": 0,
         "nb_stream_groups": 0,

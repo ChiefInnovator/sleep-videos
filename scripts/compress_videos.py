@@ -35,7 +35,7 @@ def main():
             if size > MAX_BYTES:
                 raise SystemExit(f'{kind}: {size} bytes exceeds the {MAX_BYTES}-byte limit')
             qc = video_qc(temporary, seconds, report)
-            qc['probe']['format']['filename'] = str(target)
+            qc['probe']['format']['filename'] = str(target.relative_to(ROOT))
             # Prepare the report fully before touching the delivered file, so a failure leaves both unchanged.
             data = json.loads(report.read_text())
             data.pop('sha256', None)

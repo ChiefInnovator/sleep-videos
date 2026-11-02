@@ -318,8 +318,10 @@ Run these from the local clone, with the staged restructure present.
     `*.tmp.mp4`, `/reports/sleep-soundscapes-v1.0.0-source.zip`.
 6.  Size audit: `git ls-files -s | awk '{print $2}' | git cat-file
     --batch-check='%(objectsize) %(objectname)' | sort -n | tail -3` shows
-    nothing over 1,000,000,000. `git lfs ls-files` lists only
-    `previews/*.flac`.
+    nothing over 1,000,000,000 for plain blobs. For LFS entries this measures only
+    the pointer, so also check each pointer's `size` field, for example
+    `git lfs ls-files -s` or the `media-guard` script run locally.
+    `git lfs ls-files` lists only `previews/*.flac`.
 7.  Commit, then run `git merge origin/develop`. `develop` adds `AGENTS.md` and
     `branch-policy.yml`. `origin/develop` shares history with local `main` at
     `d7498dd`.
