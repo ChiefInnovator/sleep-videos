@@ -288,9 +288,10 @@ pushes to `main` are blocked.
     videos at about 0.6 GB each, plus about 130 MB of preview FLACs. To skip
     video downloads, clone with `GIT_LFS_SKIP_SMUDGE=1` or set
     `lfs.fetchexclude=videos/`.
-*   **Security**: Each workflow sets top-level `permissions: {}`. `media-guard`
-    grants `contents: read`. `pages.yml` grants `contents: read`,
-    `pages: write`, and `id-token: write`. No secrets are committed, and `.env*`
+*   **Security**: Each workflow declares top-level `permissions` with only what
+    it needs. `branch-policy.yml` grants none (`{}`), `media-guard.yml` grants
+    `contents: read`, and `pages.yml` grants `contents: read`, `pages: write`,
+    and `id-token: write`. No secrets are committed, and `.env*`
     stays ignored.
 
 ## Additional Resources

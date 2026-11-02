@@ -182,10 +182,10 @@ def audio_qc(path, seconds):
             'limitations':'Numerical screening cannot establish absence of audible clicks, repetition, or unnatural texture.'}
 
 
-def video(master, output, seconds, kind, efficient=False):
+def video(master, output, seconds, kind, efficient=False, bitrate='160k'):
     if efficient:
         from efficient_video import render
-        return render(master, output, seconds, kind)
+        return render(master, output, seconds, kind, bitrate)
     run(['ffmpeg', '-y', '-hide_banner', '-nostdin', '-filter_complex_threads', '1', '-loop', '1', '-framerate', '24',
          '-t', str(TITLE_SECONDS), '-i', str(ROOT/'assets/inventing-fire-title.png'),
          '-f', 'lavfi', '-i', f'color=c=black:s=1280x720:r=24:d={seconds-TITLE_SECONDS}',
@@ -197,7 +197,7 @@ def video(master, output, seconds, kind, efficient=False):
          '-t', str(seconds), '-c:v', 'libx264', '-threads:v', '2', '-preset', 'ultrafast', '-crf', '18',
          '-force_key_frames', str(TITLE_SECONDS),
          '-pix_fmt', 'yuv420p', '-color_range', 'tv', '-colorspace', 'bt709',
-         '-color_primaries', 'bt709', '-color_trc', 'bt709', '-c:a', 'aac', '-b:a', '320k',
+         '-color_primaries', 'bt709', '-color_trc', 'bt709', '-c:a', 'aac', '-b:a', bitrate,
          '-ar', str(SR), '-movflags', '+faststart', str(output)])
 
 
@@ -309,7 +309,7 @@ def main():
                 'license_notes':'No third-party source-audio license is needed; this statement is provenance, not a legal determination of copyright eligibility.',
                 'fade_in_seconds':FADE_IN_SECONDS, 'fade_out_seconds':FADE_OUT_SECONDS,
                 'constant_gain_db':gain, 'target_lufs':TARGETS[index],
-                'video_encoding':('Reused existing H264/AAC MP4; encoding was not repeated.' if reuse_video else 'H264 picture segments copied; continuous AudioToolbox AAC at requested 320 kb/s, quality 0.' if args.efficient_video else 'Continuous libx264 video and native AAC at requested 320 kb/s.'),
+                'video_encoding':('Reused existing H264/AAC MP4; encoding was not repeated.' if reuse_video else 'H264 picture segments copied; continuous AudioToolbox AAC at requested 160 kb/s, quality 0.' if args.efficient_video else 'Continuous libx264 video and native AAC at requested 160 kb/s.'),
                 'master_loudness':mastered, 'audio_qc':qc, 'video_qc':vqc,
                 'listening_review':'Not performed by the agent; no audio-listening tool is available.',
                 'reference_comparison':'Not performed; usable reference audio unavailable in the browsing tool.',

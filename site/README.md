@@ -16,4 +16,4 @@ This is a static site with no build step or external JavaScript dependencies. Se
 
 `index.html` contains the page, `styles.css` the responsive design, `app.js` the preview selector, and `media/` the five MP4 previews and their title posters. Playback requires a user action. Selecting another soundscape pauses playback.
 
-GitHub Pages publishes the root of `main`. To update a preview, replace its MP4 and matching poster in `media/`, then push the change.
+`.github/workflows/pages.yml` deploys this folder to GitHub Pages on every push to `main`. To update a preview, run `.venv/bin/python scripts/compress_videos.py --only <kind>` from the repository root. It re-encodes `media/<kind>-preview.mp4` from its FLAC master and records the hash that the `media-guard` check verifies. If the title changed, copy `assets/<kind>-title.png` into `media/` as well. Files in this folder must not use Git LFS.

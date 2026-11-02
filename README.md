@@ -1,6 +1,6 @@
 # Sleep video production
 
-Marketing site: [Sleep Soundscapes](https://chiefinnovator.github.io/sleep-videos/). Its source and public preview copies live in `site/`, a separate Git repository at [ChiefInnovator/sleep-videos](https://github.com/ChiefInnovator/sleep-videos). GitHub Pages publishes the root of its `main` branch.
+Marketing site: [Sleep Soundscapes](https://chiefinnovator.github.io/sleep-videos/). This repository holds both the production workspace and the site. The site lives in `site/` and is deployed to GitHub Pages by `.github/workflows/pages.yml` on every push to `main`. Repository layout, media rules and the branch flow are described in [the consolidation design](docs/designs/repo-consolidation.md) and `AGENTS.md`.
 
 The original brief is preserved in `production-prompt.md`.
 
@@ -10,7 +10,7 @@ User-requested revision: each video now opens with its own title and a smaller I
 
 All five full deliveries passed automated verification. See [full technical results](reports/full-summary.md) and [the GitHub release](https://github.com/ChiefInnovator/sleep-videos/releases/tag/v1.0.0). Critical listening remains pending.
 
-Five original eight-hour soundscapes have been rendered: the MP4s are in `videos/` and the 48 kHz/24-bit stereo FLAC masters are in `masters/`. Every full file is exactly 8:00:00. The videos use 1280×720 at 24 fps, with AAC encoding configured at 320 kb/s. Matching three-minute previews remain in `previews/`; open `review.html` to play them. Each includes a two-second raised-cosine audio fade-in and a 25-second fade-out. The same fade durations apply to the eight-hour renders, replacing the original brief's 20–30-second opening fade at the user's request.
+Five original eight-hour soundscapes have been rendered: the v1.0.0 release MP4s (320 kb/s AAC) are archived locally in the ignored `renders/` folder, and the 48 kHz/24-bit stereo FLAC masters are in the ignored `masters/` folder. Masters are not committed; they can be regenerated bit-for-bit from the seed and `constant_gain_db` recorded in each report. Videos committed to `videos/` are re-encoded from the masters at 160 kb/s by `scripts/compress_videos.py`. Every full file is exactly 8:00:00. The videos use 1280×720 at 24 fps, with AAC encoding configured at 320 kb/s for v1.0.0. Matching three-minute previews (160 kb/s) are in `site/media/`, with their FLAC masters in `previews/`; open `review.html` to play them. Each includes a two-second raised-cosine audio fade-in and a 25-second fade-out. The same fade durations apply to the eight-hour renders, replacing the original brief's 20–30-second opening fade at the user's request.
 
 The rain previews are procedural sound designs, not field recordings. Their naturalness and the quality of all five previews need critical listening. No claim of premium quality, superiority to the references, or completed listening evaluation is made.
 
@@ -30,7 +30,7 @@ The current agent has no audio-listening tool. Numerical checks do not establish
 
 Dependencies: Python 3.14, FFmpeg/FFprobe with libx264 and AAC, plus the versions in `requirements.txt`.
 Full-frame verification also uses a C compiler and the local FFmpeg development libraries available through `pkg-config`.
-The efficient full-video exporter requires macOS AudioToolbox (`aac_at` in FFmpeg). It encodes the title and black picture once, then encodes the entire audio continuously at a requested 320 kb/s. AudioToolbox quality `0` is the highest setting exposed by this FFmpeg encoder ([implementation](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/audiotoolboxenc.c)); it accepts 16-bit PCM at the AAC encoding stage, while the separate FLAC master remains 24-bit. Short previews use FFmpeg's native AAC encoder. Both paths receive the same complete-file checks.
+The efficient full-video exporter requires macOS AudioToolbox (`aac_at` in FFmpeg). It encodes the title and black picture once, then encodes the entire audio continuously at a requested 160 kb/s (320 kb/s for the v1.0.0 release). AudioToolbox quality `0` is the highest setting exposed by this FFmpeg encoder ([implementation](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/audiotoolboxenc.c)); it accepts 16-bit PCM at the AAC encoding stage, while the separate FLAC master remains 24-bit. Short previews use FFmpeg's native AAC encoder. Both paths receive the same complete-file checks.
 
 ```sh
 cd /Users/rich/.openclaw/projects/sleep-videos
@@ -50,7 +50,12 @@ swift scripts/render_title_text.swift assets
 # Faster macOS export, with the same full-file quality checks:
 .venv/bin/python scripts/produce.py --full --render-without-listening-review --efficient-video > reports/full-run.log 2>&1
 .venv/bin/python scripts/verify_deliveries.py --full
+# Before committing any video: re-encode from the masters (160 kb/s, <= 1 GB, full QC) and update reports/*.json:
+.venv/bin/python scripts/compress_videos.py          # previews -> site/media/
+.venv/bin/python scripts/compress_videos.py --full   # eight-hour videos -> videos/
 ```
+
+`reports/SHA256SUMS` and `reports/full-artifact-hashes.json` describe the v1.0.0 release assets, not the compressed files.
 
 Use `--only rain-on-window` (or another kind listed by `--help`) to regenerate one piece. Every rerun overwrites the matching generated artifacts.
 

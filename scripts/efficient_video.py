@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 
 
-def render(master, output, seconds, kind):
+def render(master, output, seconds, kind, bitrate='160k'):
     root = Path(__file__).resolve().parents[1]
     def run(args):
         return subprocess.run(['ffmpeg', '-y', '-v', 'error', '-nostdin', *args],
@@ -29,4 +29,4 @@ def render(master, output, seconds, kind):
         run(['-f', 'concat', '-safe', '0', '-i', str(playlist), '-i', str(master),
              '-map', '0:v:0', '-map', '1:a:0', '-t', str(seconds), '-c:v', 'copy',
              '-c:a', 'aac_at', '-aac_at_quality', '0', '-aac_at_mode', 'cbr',
-             '-b:a', '320k', '-ar', '48000', '-movflags', '+faststart', str(output)])
+             '-b:a', bitrate, '-ar', '48000', '-movflags', '+faststart', str(output)])
