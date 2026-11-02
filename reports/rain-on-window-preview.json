@@ -574,7 +574,7 @@
   "youtube_transcode_check": "Not performed; no upload requested.",
   "status": "Technical checks passed; critical listening remains required.",
   "tools": {
-    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "visual_revision": "Video-specific title with smaller Inventing Fire with AI logo: hold four seconds, fade two seconds, then pure black. Included in existing runtime.",
   "video_encoding": "Re-encoded from the FLAC master by scripts/compress_videos.py: libx264 video and native AAC at requested 160k.",
@@ -584,5 +584,9 @@
     "bytes": 4122455,
     "sha256": "4065d99a299e1c90687cf1c1a646da2ba3577e26862c3efb300c35f621ddaa50",
     "path": "site/media/rain-on-window-preview.mp4"
+  },
+  "sha256": {
+    "master": "2ffe5b9758637f9038db81e36e911aee014277bfab18d1bba6a74f649d0e0c69",
+    "video": "4065d99a299e1c90687cf1c1a646da2ba3577e26862c3efb300c35f621ddaa50"
   }
 }

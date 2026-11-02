@@ -574,7 +574,7 @@
   "youtube_transcode_check": "Not performed; no upload requested.",
   "status": "Technical checks passed; critical listening remains required.",
   "tools": {
-    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "visual_revision": "Video-specific title with smaller Inventing Fire with AI logo: hold four seconds, fade two seconds, then pure black. Included in existing runtime.",
   "video_encoding": "Re-encoded from the FLAC master by scripts/compress_videos.py: libx264 video and native AAC at requested 160k.",
@@ -584,5 +584,9 @@
     "bytes": 3613463,
     "sha256": "52a5c41245455bc803269d7c75b3b79ef3e4f328b005cc3b6bbc50a952077a15",
     "path": "site/media/ambient-drone-preview.mp4"
+  },
+  "sha256": {
+    "master": "d509ebc050cef8bb898193a6b186b77e156d64da586dfe635a52e963aa6a3a1b",
+    "video": "52a5c41245455bc803269d7c75b3b79ef3e4f328b005cc3b6bbc50a952077a15"
   }
 }

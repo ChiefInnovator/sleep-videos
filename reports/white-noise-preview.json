@@ -574,7 +574,7 @@
   "youtube_transcode_check": "Not performed; no upload requested.",
   "status": "Technical checks passed; critical listening remains required.",
   "tools": {
-    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "visual_revision": "Video-specific title with smaller Inventing Fire with AI logo: hold four seconds, fade two seconds, then pure black. Included in existing runtime.",
   "video_encoding": "Re-encoded from the FLAC master by scripts/compress_videos.py: libx264 video and native AAC at requested 160k.",
@@ -584,5 +584,9 @@
     "bytes": 4105173,
     "sha256": "a1f8e1e1adc473fbc9921293442c2c97897581d11013822f6c9cc321172c4666",
     "path": "site/media/white-noise-preview.mp4"
+  },
+  "sha256": {
+    "master": "1e6f8c3f45466fbbf15adac978144d620a6818d1b59b0b73ff62eaf83de9b96b",
+    "video": "a1f8e1e1adc473fbc9921293442c2c97897581d11013822f6c9cc321172c4666"
   }
 }

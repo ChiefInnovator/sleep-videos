@@ -19,10 +19,13 @@ def main():
     mode = 'full' if args.full else 'preview'
     seconds = 28800 if args.full else 180
     rows = []
+    bitrates = set()
     for kind in KINDS:
         report = ROOT/'reports'/f'{kind}-{mode}.json'
         data = json.loads(report.read_text())
-        video = ROOT/('videos' if args.full else 'previews')/f'{kind}-{mode}.mp4'
+        delivery = data.get('delivery')
+        video = ROOT/delivery['path'] if delivery else ROOT/('videos' if args.full else 'previews')/f'{kind}-{mode}.mp4'
+        bitrates.add(delivery['bitrate'].replace('k', ' kb/s') if delivery else '320 kb/s')
         master = ROOT/('masters' if args.full else 'previews')/f'{kind}-{mode}.flac'
         print(f'Checking decoded AAC: {kind}', flush=True)
         data['video_qc']['decoded_aac_qc'] = decoded_audio_qc(video, seconds)
@@ -36,7 +39,7 @@ def main():
         rows.append(f'| {kind} | {m["input_i"]} | {m["input_tp"]} | {a["input_tp"]} | {m["input_lra"]} | Pass |')
     header = f'''# {mode.title()} technical results
 
-All five {seconds}-second deliveries passed numerical checks. Each master is 48 kHz/24-bit stereo. MP4s use 1280×720 at 24 fps and 320 kb/s AAC. Each video-specific title and smaller Inventing Fire with AI logo hold for four seconds and fades to black over two seconds. Every decoded video frame from 00:06 onward contains RGB (0,0,0) at every pixel. Lossless and decoded AAC audio passed finite-sample, peak, interior silence and one-second RMS-change screening. Each preview has 4,320 frames, including 4,176 completely black frames after the title.
+All five {seconds}-second deliveries passed numerical checks. Each master is 48 kHz/24-bit stereo. MP4s use 1280×720 at 24 fps and {' / '.join(sorted(bitrates))} AAC. Each video-specific title and smaller Inventing Fire with AI logo hold for four seconds and fades to black over two seconds. Every decoded video frame from 00:06 onward contains RGB (0,0,0) at every pixel. Lossless and decoded AAC audio passed finite-sample, peak, interior silence and one-second RMS-change screening. Each preview has 4,320 frames, including 4,176 completely black frames after the title.
 
 | Sound | Master LUFS-I | Master dBTP | AAC dBTP | Master LRA (LU) | Technical checks |
 |---|---:|---:|---:|---:|---|

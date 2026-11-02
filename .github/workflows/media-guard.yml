@@ -23,6 +23,9 @@ jobs:
               size=$(git cat-file blob "$oid" | awk '/^size /{print $2}')
               sha=$(git cat-file blob "$oid" | sed -n 's/^oid sha256://p')
               case "$path" in site/*) err "$path" "files under site/ must not be in LFS (Pages cannot serve them)";; esac
+              if ! [[ "$size" =~ ^[0-9]+$ && "$sha" =~ ^[0-9a-f]{64}$ ]]; then
+                err "$path" "malformed LFS pointer (size or oid missing or invalid)"; continue
+              fi
             else
               size=$(git cat-file -s "$oid")
               sha=""

@@ -569,7 +569,7 @@
   "youtube_transcode_check": "Not performed; no upload requested.",
   "status": "Technical checks passed; critical listening remains required.",
   "tools": {
-    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "video_encoding": "Re-encoded from the FLAC master by scripts/compress_videos.py: libx264 video and native AAC at requested 160k.",
   "delivery": {
@@ -578,5 +578,9 @@
     "bytes": 4076487,
     "sha256": "138da73597b9489903159255d8e48fc1178a7b69dcb67f3a08d110cfda3aaf2e",
     "path": "site/media/brown-noise-preview.mp4"
+  },
+  "sha256": {
+    "master": "54fe0907c19f9417f30b64088c9077092eb00a92ac6eb71b57361db7d550b12b",
+    "video": "138da73597b9489903159255d8e48fc1178a7b69dcb67f3a08d110cfda3aaf2e"
   }
 }

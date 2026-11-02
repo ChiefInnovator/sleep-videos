@@ -28,26 +28,29 @@ def main():
         report = ROOT/'reports'/f'{kind}-{mode}.json'
         target.parent.mkdir(parents=True, exist_ok=True)
         print(f'{kind}: encoding {args.bitrate} from {master.relative_to(ROOT)}', flush=True)
+        staged_report = report.with_suffix('.tmp.json')
         try:
             video(master, temporary, seconds, kind, efficient=args.full, bitrate=args.bitrate)
             size = temporary.stat().st_size
             if size > MAX_BYTES:
                 raise SystemExit(f'{kind}: {size} bytes exceeds the {MAX_BYTES}-byte limit')
             qc = video_qc(temporary, seconds, report)
+            qc['probe']['format']['filename'] = str(target)
+            # Prepare the report fully before touching the delivered file, so a failure leaves both unchanged.
+            data = json.loads(report.read_text())
+            data.pop('sha256', None)
+            data['video_qc'] = qc
+            data['video_encoding'] = (f'Re-encoded from the FLAC master by scripts/compress_videos.py: '
+                                      f'{"H264 picture segments copied; continuous AudioToolbox" if args.full else "libx264 video and native"} '
+                                      f'AAC at requested {args.bitrate}.')
+            data['delivery'] = {'bitrate':args.bitrate, 'encoder':'aac_at' if args.full else 'aac', 'bytes':size,
+                                'sha256':digest(temporary), 'path':str(target.relative_to(ROOT))}
+            staged_report.write_text(json.dumps(data, indent=2)+'\n')
             temporary.replace(target)
+            staged_report.replace(report)
         finally:
             temporary.unlink(missing_ok=True)
-        qc['probe']['format']['filename'] = str(target)
-        data = json.loads(report.read_text())
-        data.pop('sha256', None)
-        data['video_qc'] = qc
-        encoder = 'aac_at' if args.full else 'aac'
-        data['video_encoding'] = (f'Re-encoded from the FLAC master by scripts/compress_videos.py: '
-                                  f'{"H264 picture segments copied; continuous AudioToolbox" if args.full else "libx264 video and native"} '
-                                  f'AAC at requested {args.bitrate}.')
-        data['delivery'] = {'bitrate':args.bitrate, 'encoder':encoder, 'bytes':size,
-                            'sha256':digest(target), 'path':str(target.relative_to(ROOT))}
-        report.write_text(json.dumps(data, indent=2)+'\n')
+            staged_report.unlink(missing_ok=True)
         print(f'{kind}: PASS {size} bytes', flush=True)
 
 

@@ -591,7 +591,7 @@
     ]
   ],
   "tools": {
-    "ffmpeg": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers"
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
   },
   "visual_revision": "Video-specific title with smaller Inventing Fire with AI logo: hold four seconds, fade two seconds, then pure black. Included in existing runtime.",
   "video_encoding": "Re-encoded from the FLAC master by scripts/compress_videos.py: libx264 video and native AAC at requested 160k.",
@@ -601,5 +601,9 @@
     "bytes": 4147016,
     "sha256": "b4b1b8a28e5ed59a66a2b76f6cbb14c7000b987f30c8d48c72e3e0636a5ea6c8",
     "path": "site/media/distant-thunder-rain-preview.mp4"
+  },
+  "sha256": {
+    "master": "4f3c2a0bf2ce55942bcd19578d8dcd16b3e0cdc062e0951c4f25d25d81dad4aa",
+    "video": "b4b1b8a28e5ed59a66a2b76f6cbb14c7000b987f30c8d48c72e3e0636a5ea6c8"
   }
 }
