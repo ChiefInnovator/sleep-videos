@@ -5,6 +5,7 @@ __pycache__/
 .env
 .env.*
 .codex/
+/.vscode/
 node_modules/
 .video-render-*/
 .efficient-check-*/
@@ -17,4 +18,5 @@ node_modules/
 /previews/*.mp4
 *.tmp.mp4
 /reports/sleep-soundscapes-v1.0.0-source.zip
+/reports/compress-full-run.log
 *.tmp.json
